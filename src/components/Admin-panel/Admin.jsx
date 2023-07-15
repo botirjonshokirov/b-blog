@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Typography, TextField, Button, Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import QuillEditor from "./QuillEditor";
 
 const Admin = () => {
   const theme = useTheme();
@@ -12,8 +11,8 @@ const Admin = () => {
     setTitle(event.target.value);
   };
 
-  const handleContentChange = (value) => {
-    setContent(value);
+  const handleContentChange = (event) => {
+    setContent(event.target.value);
   };
 
   const handleSubmit = async (event) => {
@@ -54,7 +53,14 @@ const Admin = () => {
           fullWidth
           margin="normal"
         />
-        <QuillEditor value={content} onChange={handleContentChange} />
+        <TextField
+          label="Content"
+          value={content}
+          onChange={handleContentChange}
+          multiline
+          fullWidth
+          margin="normal"
+        />
         <Button type="submit" variant="contained" color="primary">
           Create Post
         </Button>
