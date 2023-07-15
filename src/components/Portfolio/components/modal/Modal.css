@@ -1,0 +1,108 @@
+.container.contact__containerform {
+  width: 100%;
+  gap: 12%;
+}
+
+.star-rating {
+  width: max-content;
+  display: block;
+  display: flex;
+  padding: 5px 10px;
+  gap: 0.8rem;
+  border-radius: 0.5rem;
+  background: transparent;
+  border: 2px solid var(--color-primary-variant);
+  resize: none;
+  color: var(--color-white);
+}
+
+.star-rating button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.on {
+  color: #000;
+}
+.off {
+  color: #ccc;
+}
+
+/*  ============================== FORM =====================  */
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  background: transparent;
+  border: 2px solid var(--color-primary-variant);
+  resize: none;
+  color: var(--color-white);
+}
+
+/* The Modal (background) */
+.modal {
+  position: fixed;
+
+  z-index: 1; /* Sit on top */
+  top: 0%;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: var(--color-bg);
+  margin: 10% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border-radius: 5%;
+  width: 600px;
+  height: 100%;
+}
+
+.btns-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+/*
+  =================
+  MEDIA
+  QUERIES
+  (MEDIUM DEVICES)
+  ================
+  */
+@media screen and (max-width: 1024px) {
+  .container.contact__containerform {
+    width: 50%;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .modal {
+    top: 10%;
+    left: 26%;
+  }
+  .modal-content {
+    width: 400px;
+  }
+}
+
+/* ================= MEDIA QUERIES (SMALL DEVICES) ================ */
+@media screen and (max-width: 600px) {
+  .container.contact__containerform {
+    width: var(--container-width-sm);
+  }
+  .modal {
+    top: 5%;
+    left: 5%;
+  }
+  .modal-content {
+    width: 350px;
+  }
+}
