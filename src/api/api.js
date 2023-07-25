@@ -1,8 +1,6 @@
-// api.js
-
 export const fetchPosts = async () => {
   try {
-    const response = await fetch("http://localhost:5000/api/posts");
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts`);
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -16,16 +14,16 @@ export const fetchPosts = async () => {
   }
 };
 
-export const fetchLastComment = async (postId) => {
+export const fetchLastComment = async (slug) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/posts/${postId}/comments/last`
+      `${process.env.REACT_APP_API_URL}/api/posts/${slug}/comments/last`
     );
     if (response.ok) {
       const commentData = await response.json();
       return commentData.content;
     } else {
-      console.log(`Failed to fetch last comment for post: ${postId}`);
+      console.log(`Failed to fetch last comment for post: ${slug}`);
       return null;
     }
   } catch (error) {
@@ -34,9 +32,11 @@ export const fetchLastComment = async (postId) => {
   }
 };
 
-export const fetchPost = async (id) => {
+export const fetchPost = async (slug) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/posts/${id}`);
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/posts/${slug}`
+    );
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -50,10 +50,10 @@ export const fetchPost = async (id) => {
   }
 };
 
-export const fetchComments = async (id) => {
+export const fetchComments = async (slug) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/posts/${id}/comments`
+      `${process.env.REACT_APP_API_URL}/api/posts/${slug}/comments`
     );
     if (response.ok) {
       const data = await response.json();
@@ -68,10 +68,10 @@ export const fetchComments = async (id) => {
   }
 };
 
-export const submitComment = async (id, name, comment) => {
+export const submitComment = async (slug, name, comment) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/posts/${id}/comments`,
+      `${process.env.REACT_APP_API_URL}/api/posts/${slug}/comments`,
       {
         method: "POST",
         headers: {
@@ -90,28 +90,6 @@ export const submitComment = async (id, name, comment) => {
     }
   } catch (error) {
     console.error("Error submitting comment:", error);
-    return false;
-  }
-};
-
-export const likePost = async (id) => {
-  try {
-    const response = await fetch(`http://localhost:5000/api/posts/${id}/like`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (response.ok) {
-      console.log("Post liked successfully");
-      return true;
-    } else {
-      console.log("Failed to like post");
-      return false;
-    }
-  } catch (error) {
-    console.error("Error liking post:", error);
     return false;
   }
 };

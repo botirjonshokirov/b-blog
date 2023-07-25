@@ -13,11 +13,11 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get a single post by ID
-router.get("/:id", async (req, res) => {
+// Get a single post by slug
+router.get("/:slug", async (req, res) => {
   try {
-    const { id } = req.params;
-    const post = await Post.findById(id);
+    const { slug } = req.params;
+    const post = await Post.findOne({ slug: slug });
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
@@ -41,13 +41,13 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Update a post by ID
-router.put("/:id", async (req, res) => {
+// Update a post by slug
+router.put("/:slug", async (req, res) => {
   try {
-    const { id } = req.params;
-    const { title, content, comments, likes } = req.body;
+    const { slug } = req.params;
+    const { title, content, comments } = req.body;
 
-    const post = await Post.findById(id);
+    const post = await Post.findOne({ slug: slug });
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
@@ -55,7 +55,6 @@ router.put("/:id", async (req, res) => {
     post.title = title;
     post.content = content;
     post.comments = comments;
-    post.likes = likes;
 
     const updatedPost = await post.save();
 
@@ -66,12 +65,12 @@ router.put("/:id", async (req, res) => {
 });
 
 // Add a comment to a post
-router.post("/:id/comments", async (req, res) => {
+router.post("/:slug/comments", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { slug } = req.params;
     const { name, content } = req.body;
 
-    const post = await Post.findById(id);
+    const post = await Post.findOne({ slug: slug });
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
@@ -89,16 +88,17 @@ router.post("/:id/comments", async (req, res) => {
 
     res.json(updatedPost);
   } catch (error) {
-    console.error("Error aksdmkdjn");
+    console.error("Error:", error);
+    res.status(500).json({ error: "Failed to add comment" });
   }
 });
 
-// GET /api/posts/:id/comments
-router.get("/:id/comments", async (req, res) => {
+// GET /api/posts/:slug/comments
+router.get("/:slug/comments", async (req, res) => {
   try {
-    const postId = req.params.id;
+    const slug = req.params.slug;
 
-    const post = await Post.findById(postId);
+    const post = await Post.findOne({ slug: slug });
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
@@ -111,8 +111,9 @@ router.get("/:id/comments", async (req, res) => {
     res.status(500).json({ error: "Failed to retrieve comments" });
   }
 });
+
 // Get a single comment by ID
-router.get("/:id/comments/:id", async (req, res) => {
+router.get("/:slug/comments/:id", async (req, res) => {
   try {
     const commentId = req.params.id;
 
@@ -125,26 +126,6 @@ router.get("/:id/comments/:id", async (req, res) => {
   } catch (error) {
     console.error("Error retrieving comment:", error);
     res.status(500).json({ error: "Failed to retrieve comment" });
-  }
-});
-
-// Increment likes for a post
-router.post("/:id/like", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const post = await Post.findById(id);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found" });
-    }
-
-    post.likes += 1;
-
-    const updatedPost = await post.save();
-
-    res.json(updatedPost);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to increment likes" });
   }
 });
 
