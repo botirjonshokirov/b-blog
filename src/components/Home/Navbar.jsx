@@ -7,7 +7,7 @@ const Navbar = () => {
     <div>
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          B-Blog
+          Botirjon Shokirov
         </Typography>
         <Button color="inherit" component={Link} to="/">
           Home
@@ -17,6 +17,9 @@ const Navbar = () => {
         </Button>
         <Button color="inherit" component={Link} to="/blog">
           Blog
+        </Button>
+        <Button color="inherit" component={Link} to="/contact">
+          Contact
         </Button>
         <Button color="inherit" component={Link} to="/admin">
           Admin
