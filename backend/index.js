@@ -26,11 +26,7 @@ mongoose
 
 const postRoutes = require("./routes/post");
 const projectRoutes = require("./routes/project");
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
+app.use(cors());
 
 app.use("/api/posts", postRoutes);
 app.use("/api/projects", projectRoutes);
