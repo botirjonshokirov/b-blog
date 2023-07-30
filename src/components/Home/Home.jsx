@@ -3,10 +3,12 @@ import { Typography, Button, Fade, Slide } from "@mui/material";
 import "./Home.css";
 import meImg from "../../images/me.jpg";
 import { Link } from "react-router-dom";
+import CursorAnimation from "./CursorAnimation/CursorAnimation";
 
 const Home = () => {
   return (
     <div className="container">
+      <CursorAnimation />
       <div className="image_text">
         <Fade in timeout={1000}>
           <img className="profile-picture" src={meImg} alt="Profile Picture" />
@@ -24,7 +26,13 @@ const Home = () => {
       </div>
 
       <div className="description">
-        <Typography variant="body1">Abouut Me</Typography>
+        <Typography variant="body1">
+          Hey there! I'm Botirjon Shokirov, a software engineer based in Poland.
+          Coding is my passion, and I love taking photos and exploring new
+          places through travel. If you're interested in connecting or have any
+          questions, feel free to reach out to me by e-mail. Let's make
+          technology and creativity an exciting journey together!
+        </Typography>
       </div>
 
       <div className="button-container">
