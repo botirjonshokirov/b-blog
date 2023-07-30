@@ -1,36 +1,40 @@
-// backend/routes/projects.js
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const path = require("path");
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 const Portfolio = require("../models/Portfolio");
+const cloudinary = require("cloudinary").v2;
+require("dotenv").config(); // Load environment variables from .env file
 
-// Create a storage engine for multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/assets"); // Save the uploaded image to the 'public/assets' folder
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${uuidv4()}-${path.extname(file.originalname)}`;
-    cb(null, uniqueName); // Rename the uploaded image with a unique name
-  },
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
-const upload = multer({ storage });
-
 // Route to post a new project with image upload
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { title, github, demo } = req.body;
-    const image = req.file.filename; // The unique name of the uploaded image
+    const image = req.body.image; // Assuming the client sends the image data as a base64 string
 
-    // Create a new project object with image name and other data
-    const newProject = new Portfolio({ image, title, github, demo });
+    // Upload the image to Cloudinary
+    const result = await cloudinary.uploader.upload(image, {
+      folder: "portfolio", // Cloudinary folder where the images will be stored
+      resource_type: "auto", // Automatically detect the file type (image/video)
+    });
+
+    // Create a new project object with Cloudinary image URL and other data
+    const newProject = new Portfolio({
+      image: result.secure_url,
+      title,
+      github,
+      demo,
+    });
     await newProject.save();
 
     res.status(201).json(newProject);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Failed to create a new project" });
   }
 });

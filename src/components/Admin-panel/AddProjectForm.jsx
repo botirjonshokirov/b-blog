@@ -20,24 +20,33 @@ const AddProjectForm = () => {
   };
 
   const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+    if (event.target.files[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const formData = new FormData();
-      formData.append("image", image);
-      formData.append("title", title);
-      formData.append("github", github);
-      formData.append("demo", demo);
-
+      // Make a POST request to the backend API with the image as a base64 string
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/projects`,
         {
           method: "POST",
-          body: formData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image,
+            title,
+            github,
+            demo,
+          }),
         }
       );
 

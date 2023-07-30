@@ -19,8 +19,9 @@ const Portfolio = () => {
           <Grid item xs={12} md={4} key={_id}>
             <article>
               <div>
+                {/* Use the Cloudinary image URL directly */}
                 <img
-                  src={`${process.env.REACT_APP_API_URL}/assets/${image}`}
+                  src={image} // Use the Cloudinary image URL
                   alt={title}
                   style={{
                     borderRadius: "1.5rem",
